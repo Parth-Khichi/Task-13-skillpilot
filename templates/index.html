@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="heading">
+
+        <h1>My Blog</h1>
+
+        <p>
+            Flask + MySQL + SQLAlchemy
+        </p>
+
+    </div>
+
+
+    {% if posts %}
+
+        {% for post in posts %}
+
+        <div class="post">
+
+            <h2>
+                {{ post.title }}
+            </h2>
+
+            <div class="date">
+
+                {{ post.timestamp.strftime(
+                    "%d %B %Y, %I:%M %p"
+                ) }}
+
+            </div>
+
+            <p class="post-content">
+                {{ post.content }}
+            </p>
+
+
+            <div class="actions">
+
+                <a
+                    href="{{ url_for('edit', id=post.id) }}"
+                    class="edit">
+                    Edit
+                </a>
+
+
+                <form
+                    action="{{ url_for('delete', id=post.id) }}"
+                    method="POST"
+                    style="display:inline;"
+                    onsubmit="return confirm('Are you sure you want to delete this post?');">
+
+                    <button
+                        type="submit"
+                        class="delete">
+                        Delete
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+
+    {% else %}
+
+        <div class="empty">
+
+            <h2>No Posts Found</h2>
+
+            <p>
+                You haven't created any blog posts yet.
+            </p>
+
+            <a
+                href="{{ url_for('create') }}"
+                class="add-button">
+                Create Your First Post
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
